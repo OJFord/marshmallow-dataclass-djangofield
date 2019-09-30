@@ -1,5 +1,5 @@
 """Django Fields from marshmallow-dataclass."""
-__version__ = '0.1.0'
+__version__ = '0.1.1-1'
 
 from django.contrib.postgres.fields import JSONField
 from django.db import migrations
@@ -43,7 +43,7 @@ def marshmallow_dataclass_djangofield(*, model_name: str):
         class Serializer(migrations.serializer.BaseSerializer):
 
             def serialize(self):
-                return f'{cls.__module__}.{model_name}.{cls.__name__}.Schema()', {}
+                return f'{cls.__module__}.{model_name}.{cls.__name__}.Schema()', {f'import {cls.__module__}'}
 
         setattr(cls.Schema, '__eq__', lambda s, o: s.Schema().dumps(s) == o.Schema().dumps(o))
         migrations.writer.MigrationWriter.register_serializer(cls.Schema, Serializer)

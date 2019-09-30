@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "marshmallow-dataclass-djangofield"
-version = "0.1.0"
+version = "0.1.1-1"
 description = "Use marshmallow-dataclass as a Django Field"
 license = "MIT"
 authors = [
