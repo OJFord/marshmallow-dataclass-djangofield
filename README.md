@@ -8,7 +8,7 @@ from marshmallow_dataclass_djangofield import marshmallow_dataclass_djangofield
 
 
 class MyModel(Model):
-    
+
     @marshmallow_dataclass_djangofield(model_name='MyModel')
     @marshmallow_dataclass.dataclass
     class MyDataClass:
