@@ -1,5 +1,7 @@
 """Django Fields from marshmallow-dataclass."""
-__version__ = "0.1.1-1"
+__version__ = "0.2.0-1"
+
+from typing import Dict, List
 
 from django.contrib.postgres.fields import JSONField
 from django.db import migrations
@@ -29,10 +31,10 @@ class MarshmallowField(JSONField):
     def from_db_value(self, value, *_, **__):
         return self.to_python(value)
 
-    def to_python(self, *args, **kwargs):
+    def to_python(self, *args, **kwargs) -> List[Dict]:
         python = super().to_python(*args, **kwargs)
         if self.many:
-            return map(self.schema.load, python)
+            return list(map(self.schema.load, python))
         return self.schema.load(python)
 
 
