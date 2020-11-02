@@ -3,9 +3,14 @@ __version__ = "0.2.0-1"
 
 from typing import Dict, List
 
-from django.contrib.postgres.fields import JSONField
 from django.db import migrations
 from marshmallow import Schema
+
+try:
+    from django.db.models import JSONField
+except ImportError:
+    from django.contrib.postgres.fields import JSONField
+
 
 __all__ = (
     "MarshmallowField",
@@ -28,14 +33,15 @@ class MarshmallowField(JSONField):
     def get_prep_value(self, value):
         return super().get_prep_value(list(map(self.schema.dump, value)))
 
-    def from_db_value(self, value, *_, **__):
-        return self.to_python(value)
+    def from_db_value(self, value, *args, **kwargs):
+        if hasattr(super(), "from_db_value"):  # Django v >=3.1
+            suped = super().from_db_value(value, *args, **kwargs)
+        else:  # Django v <3.1
+            suped = super().to_python(value)
 
-    def to_python(self, *args, **kwargs) -> List[Dict]:
-        python = super().to_python(*args, **kwargs)
         if self.many:
-            return list(map(self.schema.load, python))
-        return self.schema.load(python)
+            return list(map(self.schema.load, suped))
+        return self.schema.load(suped)
 
 
 def marshmallow_dataclass_djangofield(*, model_name: str):
