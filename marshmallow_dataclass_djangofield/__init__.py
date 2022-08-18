@@ -5,6 +5,7 @@ from typing import Dict, List
 
 from django.db import migrations
 from marshmallow import Schema
+from marshmallow_dataclass import class_schema
 
 try:
     from django.db.models import JSONField
@@ -56,7 +57,7 @@ def marshmallow_dataclass_djangofield(*, model_name: str):
         setattr(
             cls.Schema,
             "__eq__",
-            lambda s, o: s.Schema().dumps(s) == o.Schema().dumps(o),
+            lambda s, o: class_schema(s).dumps(s) == class_schema(o).dumps(o),
         )
         migrations.writer.MigrationWriter.register_serializer(cls.Schema, Serializer)
         return cls
