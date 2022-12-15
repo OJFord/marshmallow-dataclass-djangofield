@@ -21,6 +21,7 @@ classifiers = [
 [tool.poetry.dependencies]
 django = ">=2.2"
 marshmallow = ">=3.0.3"
+marshmallow-dataclass = ">=7.0.0"
 python = ">=3.7"
 
 [tool.poetry.dev-dependencies]

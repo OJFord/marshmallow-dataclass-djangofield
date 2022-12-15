@@ -56,7 +56,7 @@ def marshmallow_dataclass_djangofield(*, model_name: str):
         setattr(
             cls.Schema,
             "__eq__",
-            lambda s, o: s.Schema().dumps(s) == o.Schema().dumps(o),
+            lambda s, o: s.dumps({}) == o.dumps({}),
         )
         migrations.writer.MigrationWriter.register_serializer(cls.Schema, Serializer)
         return cls
